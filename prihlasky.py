@@ -13,8 +13,8 @@ app.config['DISCORD_CLIENT_SECRET'] = os.environ['DISCORD_CLIENT_SECRET']
 app.config['DISCORD_REDIRECT_URI'] = os.environ['DISCORD_REDIRECT_URI']
 discord = DiscordOAuth2Session(app)
 discord_scope = ['identify', 'guilds']
-allowed_guild_id = os.environ['GUILD_ID']
-allowed_role_id = os.environ['ROLE_ID']
+allowed_guild_id = int(os.environ['GUILD_ID'])
+allowed_role_id = int(os.environ['ROLE_ID'])
 
 # MongoDB connection settings
 mongo_host = os.environ['MONGO_HOST']
@@ -24,6 +24,21 @@ mongo_db = os.environ['MONGO_DB']
 mongo_collection = os.environ['MONGO_COLLECTION']
 mongo_username = os.environ['MONGO_USER']
 mongo_password = os.environ['MONGO_PASS']
+
+class Auth(Enum):
+    No=0
+    Approved=1
+    Denied=2
+
+def check_auth():
+    if not discord.authorized:
+        return Auth.No
+    user = discord.fetch_user()
+    for g in user.fetch_guilds():
+        if g.id == allowed_guild_id:
+            return Auth.Approved
+    return Auth.Denied
+
 
 def get_mongo_collection():
     # Fetch the messages from MongoDB
@@ -69,9 +84,14 @@ def add_conversation():
         )
     return ('', 204)
 
-@requires_authorization
 @app.route('/prihlaska')
+@requires_authorization
 def display_conversation():
+    match (check_auth()):
+        case Auth.No:
+            return redirect(url_for('login'))
+        case Auth.Denied:
+            return ("Auth Denied", 403)
     channel_id = request.args.get('channel_id')
     query = {}
     query['channel_id'] = int(channel_id)
@@ -85,9 +105,14 @@ def display_conversation():
     # Render the conversation template and pass the messages as a variable
     return render_template('conversation.html', messages=messages)
 
-@requires_authorization
 @app.route('/', methods=['GET'])
+@requires_authorization
 def list_channels():
+    match (check_auth()):
+        case Auth.No:
+            return redirect(url_for('login'))
+        case Auth.Denied:
+            return ("Auth Denied", 403)
     # Fetch the distinct channel_ids from MongoDB
     collection = get_mongo_collection()    
     channel_info = collection.aggregate([
