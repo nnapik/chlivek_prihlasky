@@ -3,7 +3,7 @@ from flask_discord import DiscordOAuth2Session, requires_authorization, Unauthor
 from pymongo import MongoClient
 from datetime import datetime
 from enum import Enum
-import json, secrets
+import json, secrets, os
 
 app = Flask(__name__)
 
