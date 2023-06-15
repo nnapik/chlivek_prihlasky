@@ -32,7 +32,7 @@ def get_mongo_collection():
         port=int(mongo_port),
         username=mongo_username,
         password=mongo_password,
-        authSource=mongo_db,
+        authSource=mongo_auth,
         authMechanism='SCRAM-SHA-256'
     )
     db = client[mongo_db]
