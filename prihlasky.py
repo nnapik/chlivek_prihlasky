@@ -8,6 +8,9 @@ import json, secrets
 app = Flask(__name__)
 
 app.secret_key = secrets.token_hex(16)
+app.config['DISCORD_CLIENT_ID'] = os.environ['DISCORD_CLIENT_ID']
+app.config['DISCORD_CLIENT_SECRET'] = os.environ['DISCORD_CLIENT_SECRET']
+app.config['DISCORD_REDIRECT_URI'] = os.environ['DISCORD_REDIRECT_URI']
 discord = DiscordOAuth2Session(app)
 discord_scope = ['identify', 'guilds']
 allowed_guild_id = os.environ['GUILD_ID']
