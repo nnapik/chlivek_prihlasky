@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prihlaska</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Prihlaska</h1>
+        <ul>
+            {% for message in messages %}
+            <li class="message {% if message['author'] == 'You' %}my-message{% else %}other-message{% endif %}">
+                <div class="timestamp">{{ message['formatted_timestamp'] }}
+                <div class="author">{{ message['author_nick'] }}:</div>
+                <div class="content">
+                {% for line in message.lines %}
+                    {{ line }}<br />
+                {% endfor %}
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        <h2><a class="message" href="/">Zpet na seznam prihlasek</a></h2>
+    </div>
+</body>
+</html>

@@ -1,0 +1,61 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.message {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.author {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.content {
+    margin-top: 5px;
+}
+
+.my-message {
+    background-color: #dcf8c6;
+    text-align: right;
+}
+
+.other-message {
+    background-color: #f0f0f0;
+    text-align: left;
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+    margin-top: 30px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 20px;
+}
+
+li {
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+a {
+    color: #333;
+    text-decoration: unerline;
+}
+
+a:hover {
+    text-decoration: underline;
+}

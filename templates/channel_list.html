@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Seznam prihlasek</title>   
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+    <h1>Seznam prihlasek</h1>
+    <ul>
+        {% for info in channel_info %}
+            <li class="message"><a href="/prihlaska?channel_id={{ info._id.channel_id }}">{{ info._id.channel }}</a></li>
+        {% endfor %}
+    </ul>
+    </div>
+</body>
+</html>
