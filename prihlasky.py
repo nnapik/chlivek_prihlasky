@@ -13,8 +13,6 @@ app.config['DISCORD_CLIENT_SECRET'] = os.environ['DISCORD_CLIENT_SECRET']
 app.config['DISCORD_REDIRECT_URI'] = os.environ['DISCORD_REDIRECT_URI']
 discord = DiscordOAuth2Session(app)
 discord_scope = ['identify', 'guilds']
-allowed_guild_id = int(os.environ['GUILD_ID'])
-allowed_role_id = int(os.environ['ROLE_ID'])
 
 # MongoDB connection settings
 mongo_host = os.environ['MONGO_HOST']
@@ -34,13 +32,16 @@ def check_auth():
     if not discord.authorized:
         return Auth.No
     user = discord.fetch_user()
-    for g in user.fetch_guilds():
-        if g.id == allowed_guild_id:
-            return Auth.Approved
+    collection = get_mongo_collection("GA")
+    query={}
+    query['user_id'] = user.id
+    allowed_user = list(collection.find(query))
+
+    if allowed_user is not None:
+        return Auth.Approved
     return Auth.Denied
 
-
-def get_mongo_collection():
+def get_mongo_collection(collection):
     # Fetch the messages from MongoDB
     client = MongoClient(
         host=mongo_host,
@@ -51,7 +52,7 @@ def get_mongo_collection():
         authMechanism='SCRAM-SHA-256'
     )
     db = client[mongo_db]
-    return db[mongo_collection]
+    return db[collection]
 
 @app.errorhandler(Unauthorized)
 def redirect_unauthorized(e):
@@ -74,7 +75,7 @@ def add_conversation():
     data = json.loads(file)
 
     # Insert the data into MongoDB
-    collection = get_mongo_collection()
+    collection = get_mongo_collection(mongo_collection)
     for message in data:
         message_id = message['id']
         collection.update_one(
@@ -96,7 +97,7 @@ def display_conversation():
     query = {}
     query['channel_id'] = int(channel_id)
     # Fetch the messages from MongoDB
-    collection = get_mongo_collection()
+    collection = get_mongo_collection(mongo_collection)
     messages = list(collection.find(query))
     for message in messages:
         message['formatted_timestamp'] = datetime.fromisoformat(message['timestamp']).strftime('%Y-%m-%d %H:%M:%S')
@@ -114,7 +115,7 @@ def list_channels():
         case Auth.Denied:
             return ("Auth Denied", 403)
     # Fetch the distinct channel_ids from MongoDB
-    collection = get_mongo_collection()    
+    collection = get_mongo_collection(mongo_collection)
     channel_info = collection.aggregate([
         {
             '$group': {
