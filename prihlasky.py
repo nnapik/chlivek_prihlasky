@@ -22,6 +22,7 @@ mongo_db = os.environ['MONGO_DB']
 mongo_collection = os.environ['MONGO_COLLECTION']
 mongo_username = os.environ['MONGO_USER']
 mongo_password = os.environ['MONGO_PASS']
+read_only = os.environ['READ_ONLY']
 
 class Auth(Enum):
     No=0
@@ -69,6 +70,8 @@ def callback():
 
 @app.route('/upload', methods=['POST'])
 def add_conversation():
+    if (read_only == 'True'):
+        return ('', 204)
     # Get the uploaded JSON file
     file = request.get_data()
     # Read the JSON data from the file
