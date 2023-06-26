@@ -60,7 +60,7 @@ def redirect_unauthorized(e):
 
 @app.route('/login')
 def login():
-    return discord.create_session(scope=discord_scope)
+    return discord.create_session(scope=discord_scope, prompt=False)
 
 @app.route('/callback')
 def callback():
@@ -134,3 +134,4 @@ def list_channels():
 
 if __name__ == '__main__':
     app.run()
+
