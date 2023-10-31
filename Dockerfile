@@ -10,4 +10,4 @@ RUN pip install -r requirements.txt
 COPY static/* ./static/
 COPY templates/* ./templates/
 COPY prihlasky.py ./
-CMD ["gunicorn", "-w", "4", "prihlasky:app"]
+CMD ["gunicorn", "-b", "0.0.0.0:8000", "-w", "4", "prihlasky:app"]
