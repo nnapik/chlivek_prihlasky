@@ -8,7 +8,7 @@ import os
 
 app = Flask(__name__)
 
-app.secret_key = secrets.token_hex(16)
+app.secret_key = os.environ['SHARED_SUPER_SECRET_KEY']
 app.config['DISCORD_CLIENT_ID'] = os.environ['DISCORD_CLIENT_ID']
 app.config['DISCORD_CLIENT_SECRET'] = os.environ['DISCORD_CLIENT_SECRET']
 app.config['DISCORD_REDIRECT_URI'] = os.environ['DISCORD_REDIRECT_URI']
