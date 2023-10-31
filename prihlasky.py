@@ -1,9 +1,10 @@
-from flask import Flask, redirect, request, session, url_for, render_template
+from flask import Flask, redirect, request, url_for, render_template
 from flask_discord import DiscordOAuth2Session, requires_authorization, Unauthorized
 from pymongo import MongoClient
 from datetime import datetime
 from enum import Enum
-import json, secrets, os
+import json
+import os
 
 app = Flask(__name__)
 
@@ -24,10 +25,12 @@ mongo_username = os.environ['MONGO_USER']
 mongo_password = os.environ['MONGO_PASS']
 read_only = os.environ['READ_ONLY']
 
+
 class Auth(Enum):
     No=0
     Approved=1
     Denied=2
+
 
 def check_auth():
     if not discord.authorized:
@@ -42,6 +45,7 @@ def check_auth():
         return Auth.Approved
     return Auth.Denied
 
+
 def get_mongo_collection(collection):
     # Fetch the messages from MongoDB
     client = MongoClient(
@@ -55,18 +59,22 @@ def get_mongo_collection(collection):
     db = client[mongo_db]
     return db[collection]
 
+
 @app.errorhandler(Unauthorized)
 def redirect_unauthorized(e):
     return redirect(url_for("login"))
+
 
 @app.route('/login')
 def login():
     return discord.create_session(scope=discord_scope, prompt=False)
 
+
 @app.route('/callback')
 def callback():
     discord.callback()
     return redirect(url_for('list_channels'))
+
 
 @app.route('/upload', methods=['POST'])
 def add_conversation():
@@ -88,6 +96,7 @@ def add_conversation():
         )
     return ('', 204)
 
+
 @app.route('/prihlaska')
 @requires_authorization
 def display_conversation():
@@ -108,6 +117,7 @@ def display_conversation():
 
     # Render the conversation template and pass the messages as a variable
     return render_template('conversation.html', messages=messages)
+
 
 @app.route('/', methods=['GET'])
 @requires_authorization
