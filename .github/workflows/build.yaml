@@ -1,0 +1,18 @@
+name: Docker Image CI
+
+on:
+  push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Login to dockerhub
+      run: echo '${{ secrets.DOCKERHUB_TOKEN }}' | docker login -u nnapik --password-stdin
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag nnapik/prihlasky:latest
+    - name: Push to dockerhub
+      run: docker push nnapik/prihlasky:latest
+    - name: Docker logout
+      run: docker logout
