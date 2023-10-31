@@ -1,4 +1,4 @@
-FROM python:slim
+FROM python:3
 
 RUN apt-get clean \
     && apt-get -y update \
@@ -7,8 +7,7 @@ RUN apt-get clean \
 WORKDIR /srv/flask_app
 COPY requirements.txt ./
 RUN pip install -r requirements.txt
-COPY uwsgi.ini ./
 COPY static/* ./static/
 COPY templates/* ./templates/
 COPY prihlasky.py ./
-CMD ["uwsgi", "--ini", "uwsgi.ini"]
+CMD ["gunicorn", "-w", "4", "prihlasky:app"]
