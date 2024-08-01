@@ -114,6 +114,8 @@ def display_conversation():
             return ("Auth Denied", 403)
     user = discord.fetch_user()
     channel_id = request.args.get('channel_id')
+    if (channel_id is None):
+        return redirect(url_for('list_channels'))
     posthog.capture(user.id, 'prihlaska', {'channel_id':channel_id})
     query = {}
     query['channel_id'] = int(channel_id)
@@ -156,4 +158,3 @@ def list_channels():
 
 if __name__ == '__main__':
     app.run()
-
