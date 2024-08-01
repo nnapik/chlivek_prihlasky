@@ -112,7 +112,9 @@ def display_conversation():
             return redirect(url_for('login'))
         case Auth.Denied:
             return ("Auth Denied", 403)
+    user = discord.fetch_user()
     channel_id = request.args.get('channel_id')
+    posthog.capture(user.id, 'prihlaska', {'channel_id':channel_id})
     query = {}
     query['channel_id'] = int(channel_id)
     # Fetch the messages from MongoDB
