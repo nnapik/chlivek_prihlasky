@@ -2,6 +2,7 @@ from flask import Flask, redirect, request, url_for, render_template
 from flask_discord import DiscordOAuth2Session, requires_authorization, Unauthorized
 from pymongo import MongoClient
 from datetime import datetime
+from posthog import Posthog
 from enum import Enum
 import json
 import os
@@ -14,6 +15,7 @@ app.config['DISCORD_CLIENT_SECRET'] = os.environ['DISCORD_CLIENT_SECRET']
 app.config['DISCORD_REDIRECT_URI'] = os.environ['DISCORD_REDIRECT_URI']
 discord = DiscordOAuth2Session(app)
 discord_scope = ['identify', 'guilds']
+posthog = Posthog(os.environ['POSTHOG_TOKEN'], host=os.environ['POSTHOG_URL'])
 
 # MongoDB connection settings
 mongo_host = os.environ['MONGO_HOST']
@@ -34,6 +36,7 @@ class Auth(Enum):
 
 def check_auth():
     if not discord.authorized:
+        posthog.capture('check_auth', 'Auth.No')
         return Auth.No
     user = discord.fetch_user()
     collection = get_mongo_collection("GA")
@@ -42,7 +45,9 @@ def check_auth():
     allowed_user = list(collection.find(query))
 
     if allowed_user is not None:
+        posthog.capture('check_auth', 'Auth.Approved')
         return Auth.Approved
+    posthog.capture('check_auth', 'Auth.Denied')
     return Auth.Denied
 
 
