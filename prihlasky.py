@@ -36,7 +36,7 @@ class Auth(Enum):
 
 def check_auth():
     if not discord.authorized:
-        posthog.capture(None, event='check_auth', 'Auth.No')
+        posthog.capture(None, 'check_auth', {'Auth':'No'})
         return Auth.No
     user = discord.fetch_user()
     collection = get_mongo_collection("GA")
