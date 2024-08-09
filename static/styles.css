@@ -71,7 +71,7 @@ body.light {
 
 .light .theme-switch-button {
     background-color: #F0F0F0; 
-    color: white;
+    color: #000000;
 }
 
 .light .theme-switch-button:hover {
