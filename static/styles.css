@@ -70,12 +70,12 @@ body.light {
 }
 
 .light .theme-switch-button {
-    background-color: #4CAF50; /* Green */
+    background-color: #F0F0F0; 
     color: white;
 }
 
 .light .theme-switch-button:hover {
-    background-color: #45a049;
+    background-color: #DCF8C6;
 }
 
 /* Dark Theme */
@@ -108,12 +108,12 @@ body.dark {
 }
 
 .dark .theme-switch-button {
-    background-color: #2c7a7b; /* Teal */
+    background-color: #333333;
     color: white;
 }
 
 .dark .theme-switch-button:hover {
-    background-color: #275e5f;
+    background-color: #2c7a7b;
 }
 
 /* List Styles */
