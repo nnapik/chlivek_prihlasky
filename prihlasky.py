@@ -130,6 +130,13 @@ def display_conversation():
     theme = session.get('theme', 'dark')
     return render_template('conversation.html', messages=messages, theme=theme)
 
+@app.route('/toggle_theme')
+def toggle_theme():
+    if 'theme' not in session or session['theme'] == 'light':
+        session['theme'] = 'dark'
+    else:
+        session['theme'] = 'light'
+    return redirect(request.referrer or url_for('list_channels'))
 
 @app.route('/', methods=['GET'])
 @requires_authorization
