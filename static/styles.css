@@ -27,6 +27,21 @@ body {
     margin-top: 5px;
 }
 
+/* Button Styles */
+.theme-switch-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 10px auto;
+    display: block;
+    width: 100%;
+    max-width: 200px;
+    text-align: center;
+    transition: background-color 0.3s, color 0.3s;
+}
+
 /* Light Theme */
 body.light {
     background-color: #ffffff;
@@ -52,6 +67,15 @@ body.light {
 
 .light a:hover {
     text-decoration: underline;
+}
+
+.light .theme-switch-button {
+    background-color: #4CAF50; /* Green */
+    color: white;
+}
+
+.light .theme-switch-button:hover {
+    background-color: #45a049;
 }
 
 /* Dark Theme */
@@ -81,6 +105,15 @@ body.dark {
 
 .dark a:hover {
     text-decoration: underline;
+}
+
+.dark .theme-switch-button {
+    background-color: #2c7a7b; /* Teal */
+    color: white;
+}
+
+.dark .theme-switch-button:hover {
+    background-color: #275e5f;
 }
 
 /* List Styles */

@@ -7,7 +7,7 @@
 <body class={{ theme }}>
     <div class="theme-switch-wrapper">
         <a href="{{ url_for('toggle_theme') }}">
-            <button>{{ 'Switch to Dark Mode' if theme == 'light' else 'Switch to Light Mode' }}</button>
+            <button class="theme-switch-button">{{ 'Switch to Dark Mode' if theme == 'light' else 'Switch to Light Mode' }}</button>
         </a>
     </div>
     <div class="container">
