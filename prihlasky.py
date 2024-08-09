@@ -128,7 +128,7 @@ def display_conversation():
 
     # Render the conversation template and pass the messages as a variable
     theme = session.get('theme', 'dark')
-    return render_template('conversation.html', messages=messages, theme=theme)
+    return render_template('conversation.html', messages=messages, user_id=user.id, theme=theme)
 
 @app.route('/toggle_theme')
 def toggle_theme():

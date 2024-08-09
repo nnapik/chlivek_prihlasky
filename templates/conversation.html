@@ -14,7 +14,7 @@
         <h1>Prihlaska</h1>
         <ul>
             {% for message in messages %}
-            <li class="message {% if message['author'] == 'You' %}my-message{% else %}other-message{% endif %}">
+            <li class="message {% if message['author_id'] == '{{ user_id }}' %}my-message{% else %}other-message{% endif %}">
                 <div class="timestamp">{{ message['formatted_timestamp'] }}
                 <div class="author">{{ message['author_nick'] }}:</div>
                 <div class="content">
