@@ -127,7 +127,8 @@ def display_conversation():
         message['lines'] = message['message'].split('\n')
 
     # Render the conversation template and pass the messages as a variable
-    return render_template('conversation.html', messages=messages)
+    theme = session.get('theme', 'dark')
+    return render_template('conversation.html', messages=messages, theme=theme)
 
 
 @app.route('/', methods=['GET'])
@@ -153,7 +154,8 @@ def list_channels():
         }
     ])
 
-    return render_template('channel_list.html', channel_info=channel_info)
+    theme = session.get('theme', 'dark')
+    return render_template('channel_list.html', channel_info=channel_info, theme=theme)
 
 
 if __name__ == '__main__':
