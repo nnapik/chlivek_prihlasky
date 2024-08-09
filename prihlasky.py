@@ -1,4 +1,4 @@
-from flask import Flask, redirect, request, url_for, render_template
+from flask import Flask, redirect, request, url_for, render_template, session
 from flask_discord import DiscordOAuth2Session, requires_authorization, Unauthorized
 from pymongo import MongoClient
 from datetime import datetime
