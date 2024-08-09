@@ -7,7 +7,16 @@
 <body class={{ theme }}>
     <div class="theme-switch-wrapper">
         <a href="{{ url_for('toggle_theme') }}">
-            <button class="theme-switch-button">{{ 'Switch to Dark Mode' if theme == 'light' else 'Switch to Light Mode' }}</button>
+            <button class="theme-switch-button">
+            {% if theme == 'light' %}
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m8-9h-1m-16 0H3m14.95-7.05l-.707.707M5.05 5.05l-.707.707M18.364 18.364l-.707.707M6.343 18.364l-.707.707M12 7a5 5 0 015 5m-5-5a5 5 0 100 10 5 5 0 010-10z" />
+                </svg> <!-- Moon icon for dark mode -->
+            {% else %}
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m8-9h-1m-16 0H3m14.95-7.05l-.707.707M5.05 5.05l-.707.707M18.364 18.364l-.707.707M6.343 18.364l-.707.707M12 7a5 5 0 015 5m-5-5a5 5 0 100 10 5 5 0 010-10z" />
+                </svg> <!-- Sun icon for light mode -->
+            {% endif %}</button>
         </a>
     </div>
     <div class="container">
