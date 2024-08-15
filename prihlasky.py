@@ -4,11 +4,13 @@ from pymongo import MongoClient
 from datetime import datetime
 from posthog import Posthog
 from enum import Enum
+from dotenv import load_dotenv
 import json
 import os
 
 app = Flask(__name__)
 
+load_dotenv()
 app.secret_key = os.environ['SHARED_SUPER_SECRET_KEY']
 app.config['DISCORD_CLIENT_ID'] = os.environ['DISCORD_CLIENT_ID']
 app.config['DISCORD_CLIENT_SECRET'] = os.environ['DISCORD_CLIENT_SECRET']
