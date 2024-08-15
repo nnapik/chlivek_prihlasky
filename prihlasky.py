@@ -83,7 +83,7 @@ def callback():
 
 @app.route('/upload', methods=['POST'])
 def add_conversation():
-    token = request.headers.get('admin_token')
+    token = request.headers.get('token')
     if token != admin_token:
         return ('', 401)
 
