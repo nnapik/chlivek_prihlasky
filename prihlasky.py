@@ -7,6 +7,7 @@ from enum import Enum
 from dotenv import load_dotenv
 import json
 import os
+import markdown
 
 app = Flask(__name__)
 
@@ -126,7 +127,8 @@ def display_conversation():
     messages = list(collection.find(query))
     for message in messages:
         message['formatted_timestamp'] = datetime.fromisoformat(message['timestamp']).strftime('%Y-%m-%d %H:%M:%S')
-        message['lines'] = message['message'].split('\n')
+        message['own'] = user.id == int(message['author_id'])
+        message['lines'] = markdown.markdown(message['message']).split('\n')
 
     # Render the conversation template and pass the messages as a variable
     theme = session.get('theme', 'dark')

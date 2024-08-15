@@ -4,4 +4,5 @@ pymongo
 gunicorn
 posthog
 python-dotenv
+markdown
 boto3
