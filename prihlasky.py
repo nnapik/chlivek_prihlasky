@@ -134,10 +134,10 @@ def display_conversation():
 
 @app.route('/toggle_theme')
 def toggle_theme():
-    if 'theme' not in session or session['theme'] == 'light':
-        session['theme'] = 'dark'
-    else:
+    if 'theme' not in session or session['theme'] == 'dark':
         session['theme'] = 'light'
+    else:
+        session['theme'] = 'dark'
     return redirect(request.referrer or url_for('list_channels'))
 
 @app.route('/', methods=['GET'])
