@@ -7,6 +7,7 @@ RUN apt-get clean \
 WORKDIR /srv/flask_app
 COPY requirements.txt ./
 RUN pip install -r requirements.txt
+COPY helpers/* ./helpers/
 COPY static/* ./static/
 COPY templates/* ./templates/
 COPY prihlasky.py ./
