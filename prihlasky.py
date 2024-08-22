@@ -1,6 +1,6 @@
-from flask import Flask, redirect, request, url_for, render_template, session
+from flask import Flask, redirect, request, url_for, render_template, session, flash
 from flask_discord import DiscordOAuth2Session, requires_authorization, Unauthorized
-from pymongo import MongoClient
+from flask_session import Session
 from datetime import datetime
 from posthog import Posthog
 from enum import Enum
@@ -8,9 +8,14 @@ from dotenv import load_dotenv
 import json
 import os
 import markdown
+import requests
+
+from helpers.mongo import get_mongo_client, get_mongo_collection
+mongo_db = os.environ['MONGO_DB']
+mongo_collection = os.environ['MONGO_COLLECTION']
+
 
 app = Flask(__name__)
-
 load_dotenv()
 app.secret_key = os.environ['SHARED_SUPER_SECRET_KEY']
 app.config['DISCORD_CLIENT_ID'] = os.environ['DISCORD_CLIENT_ID']
@@ -21,15 +26,22 @@ discord_scope = ['identify', 'guilds']
 posthog = Posthog(os.environ['POSTHOG_TOKEN'], host=os.environ['POSTHOG_URL'])
 
 # MongoDB connection settings
-mongo_host = os.environ['MONGO_HOST']
-mongo_port = os.environ['MONGO_PORT']
-mongo_auth = os.environ['MONGO_AUTH_DB']
-mongo_db = os.environ['MONGO_DB']
-mongo_collection = os.environ['MONGO_COLLECTION']
-mongo_username = os.environ['MONGO_USER']
-mongo_password = os.environ['MONGO_PASS']
 admin_token = os.environ['ADMIN_TOKEN']
 
+# Configure MongoDB for session storage
+app.config["SESSION_TYPE"] = "mongodb"
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_USE_SIGNER"] = True  # Sign the session ID cookie to prevent tampering
+
+
+# Set up the MongoDB client and session store
+client = get_mongo_client()
+app.config["SESSION_MONGODB"] = client
+app.config["SESSION_MONGODB_DB"] = mongo_db  # Database name
+app.config["SESSION_MONGODB_COLLECT"] = "sessions"  # Collection name
+
+# Initialize the session extension
+Session(app)
 
 class Auth(Enum):
     No=0
@@ -52,20 +64,6 @@ def check_auth():
         return Auth.Approved
     posthog.capture(user.id, 'check_auth', {'Auth':'Denied'})
     return Auth.Denied
-
-
-def get_mongo_collection(collection):
-    # Fetch the messages from MongoDB
-    client = MongoClient(
-        host=mongo_host,
-        port=int(mongo_port),
-        username=mongo_username,
-        password=mongo_password,
-        authSource=mongo_auth,
-        authMechanism='SCRAM-SHA-256'
-    )
-    db = client[mongo_db]
-    return db[collection]
 
 
 @app.errorhandler(Unauthorized)
@@ -170,4 +168,5 @@ def list_channels():
 
 
 if __name__ == '__main__':
+
     app.run()

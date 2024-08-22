@@ -1,5 +1,6 @@
 ﻿flask
 flask_discord
+flask_session
 pymongo
 gunicorn
 posthog
