@@ -67,7 +67,7 @@ def check_auth():
 
 
 @app.errorhandler(Unauthorized)
-def redirect_unauthorized(e):
+def redirect_unauthorized(_):
     return redirect(url_for("login"))
 
 
