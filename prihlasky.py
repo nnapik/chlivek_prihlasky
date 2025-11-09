@@ -51,7 +51,7 @@ class Auth(Enum):
 
 def check_auth():
     if not discord.authorized or 'oauth_token' not in session:
-        posthog.capture(0, 'check_auth', {'Auth':'No'})
+        posthog.capture('check_auth', distinct_id='0', properties={'Auth':'No'})
         return redirect(url_for("login"))
     user = discord.fetch_user()
     collection = get_mongo_collection("GA")
@@ -60,9 +60,9 @@ def check_auth():
     allowed_user = list(collection.find(query))
 
     if allowed_user is not None:
-        posthog.capture(user.id, 'check_auth', {'Auth':'Approved'})
+        posthog.capture('check_auth', distinct_id=str(user.id), properties={'Auth':'Approved'})
         return Auth.Approved
-    posthog.capture(user.id, 'check_auth', {'Auth':'Denied'})
+    posthog.capture('check_auth', distinct_id=str(user.id),  properties={'Auth':'Denied'})
     return Auth.Denied
 
 
@@ -117,7 +117,7 @@ def display_conversation():
     channel_id = request.args.get('channel_id')
     if (channel_id is None):
         return redirect(url_for('list_channels'))
-    posthog.capture(user.id, 'prihlaska', {'channel_id':channel_id})
+    posthog.capture('prihlaska', distinct_id=str(user.id), properties={'channel_id':channel_id})
     query = {}
     query['channel_id'] = int(channel_id)
     # Fetch the messages from MongoDB
