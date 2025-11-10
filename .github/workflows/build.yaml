@@ -7,7 +7,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - name: Login to dockerhub
       run: echo '${{ secrets.DOCKERHUB_TOKEN }}' | docker login -u nnapik --password-stdin
     - name: Build the Docker image
