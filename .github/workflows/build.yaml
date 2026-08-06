@@ -17,4 +17,5 @@ jobs:
     - name: Push to dockerhub
       run: docker push nnapik/prihlasky:latest
     - name: Docker logout
+      if: always()
       run: docker logout
