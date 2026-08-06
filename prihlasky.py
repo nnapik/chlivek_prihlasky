@@ -153,18 +153,31 @@ def list_channels():
     channel_info = collection.aggregate([
         {
             '$group': {
-                '_id': {'channel_id': '$channel_id', 'channel': '$channel'}
+                '_id': {
+                    'server': '$server',
+                    'channel_id': '$channel_id',
+                    'channel': '$channel'
+                }
             }
         },
         {
             '$sort': {
+                '_id.server': 1,
                 '_id.channel': 1
             }
         }
     ])
 
+    grouped = {}
+    for item in channel_info:
+        server = item['_id'].get('server', 'Unknown')
+        grouped.setdefault(server, []).append({
+            'channel_id': item['_id']['channel_id'],
+            'channel': item['_id']['channel']
+        })
+
     theme = session.get('theme', 'dark')
-    return render_template('channel_list.html', channel_info=channel_info, theme=theme)
+    return render_template('channel_list.html', channel_info_grouped=grouped, theme=theme)
 
 
 if __name__ == '__main__':

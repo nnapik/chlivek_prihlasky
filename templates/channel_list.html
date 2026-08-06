@@ -8,11 +8,16 @@
     {% include 'theme_button.html' %}
     <div class="container">
     <h1>Seznam prihlasek</h1>
-    <ul>
-        {% for info in channel_info %}
-            <li class="message"><a href="/prihlaska?channel_id={{ info._id.channel_id }}">{{ info._id.channel }}</a></li>
-        {% endfor %}
-    </ul>
+    {% for server, channels in channel_info_grouped.items() %}
+        <details open>
+            <summary class="server-heading">{{ server }}</summary>
+            <ul>
+                {% for info in channels %}
+                    <li class="message"><a href="/prihlaska?channel_id={{ info.channel_id }}">{{ info.channel }}</a></li>
+                {% endfor %}
+            </ul>
+        </details>
+    {% endfor %}
     </div>
 </body>
 </html>
