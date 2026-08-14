@@ -28,6 +28,28 @@ body {
     border-radius: 8px;
 }
 
+.guild-name-logo {
+    max-width: 360px;
+    width: auto;
+    margin-bottom: 8px;
+}
+
+.guild-name-text {
+    font-family: 'MoraviaExtended', serif;
+    font-size: 2em;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin: 0 0 8px;
+}
+
+.dark .guild-name-text {
+    color: #e0e0e0;
+}
+
+.light .guild-name-text {
+    color: #7a5c1e;
+}
+
 /* Container */
 .container {
     max-width: 600px;
@@ -142,6 +164,11 @@ h1 {
 body.light {
     background-color: #f5f0e8;
     color: #1a1a1a;
+}
+
+.light .guild-logo,
+.light .guild-name-logo {
+    filter: invert(1) sepia(1) saturate(2) hue-rotate(5deg) brightness(0.5);
 }
 
 .light .guild-header {
