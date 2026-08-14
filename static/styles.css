@@ -154,6 +154,7 @@ body.light {
 
 .light .my-message {
     background-color: #dcf8c6;
+    text-align: right;
 }
 
 .light .other-message {
