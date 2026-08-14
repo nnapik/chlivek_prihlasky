@@ -1,28 +1,23 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ channel_name }}</title>
-    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
-</head>
-<body class={{ theme }}>
-    {% include 'theme_button.html' %}
-    <div class="container">
-        <a class="back-link" href="/">← Zpet na archiv prihlasek</a>
-        <h1>{{ channel_name }}</h1>
-            {% for message in messages %}
-            <li class="message {% if message['own'] %}my-message{% else %}other-message{% endif %}">
-                <div class="timestamp">{{ message['formatted_timestamp'] }}
-                <div class="author">{{ message['author_nick'] }}:</div>
-                <div class="content">
-                {% for line in message.lines %}
-                    {{ line | safe }}<br />
-                {% endfor %}
-                </div>
-            </li>
+{% extends 'base.html' %}
+
+{% block title %}{{ channel_name }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <a class="back-link" href="/">← Zpet na archiv prihlasek</a>
+    <h1>{{ channel_name }}</h1>
+    <ul>
+        {% for message in messages %}
+        <li class="message {% if message['own'] %}my-message{% else %}other-message{% endif %}">
+            <div class="timestamp">{{ message['formatted_timestamp'] }} <span class="author">{{ message['author_nick'] }}:</span></div>
+            <div class="content">
+            {% for line in message.lines %}
+                {{ line | safe }}<br />
             {% endfor %}
-        </ul>
-        <a class="back-link" href="/">← Zpet na archiv prihlasek</a>
-    </div>
-</body>
-</html>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    <a class="back-link" href="/">← Zpet na archiv prihlasek</a>
+</div>
+{% endblock %}

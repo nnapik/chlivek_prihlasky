@@ -1,27 +1,20 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Archiv prihlasek</title>   
-    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
-</head>
-<body class={{ theme }}>
-    {% include 'theme_button.html' %}
-    <header class="guild-header">
-        <img src="{{ url_for('static', filename='logo.jpg') }}" alt="Guild logo" class="guild-logo">
-        <h1>Archiv prihlasek</h1>
-    </header>
-    <div class="container">
-    {% for server, channels in channel_info_grouped.items() %}
-        <details open>
-            <summary class="server-heading">{{ server }}</summary>
-            <ul>
-                {% for info in channels %}
-                    <li><a class="application-card" href="/prihlaska?channel_id={{ info.channel_id }}">{{ info.channel }}</a></li>
-                {% endfor %}
-            </ul>
-        </details>
-    {% endfor %}
-    </div>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+<header class="guild-header">
+    <img src="{{ url_for('static', filename='logo.jpg') }}" alt="Guild logo" class="guild-logo">
+    <h1>Archiv prihlasek</h1>
+</header>
+<div class="container">
+{% for server, channels in channel_info_grouped.items() %}
+    <details open>
+        <summary class="server-heading">{{ server }}</summary>
+        <ul>
+            {% for info in channels %}
+                <li><a class="application-card" href="/prihlaska?channel_id={{ info.channel_id }}">{{ info.channel }}</a></li>
+            {% endfor %}
+        </ul>
+    </details>
+{% endfor %}
+</div>
+{% endblock %}
