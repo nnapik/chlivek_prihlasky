@@ -5,5 +5,5 @@ pymongo==4.18.2
 gunicorn==26.2.0
 posthog==7.63.0
 python-dotenv==1.2.4
-markdown==3.11
+markdown==3.11.1
 boto3==1.43.108
