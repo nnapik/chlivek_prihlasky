@@ -6,4 +6,4 @@ gunicorn==26.2.0
 posthog==7.86.3
 python-dotenv==1.2.4
 markdown==3.11.3
-boto3==1.43.126
+boto3==1.44.3
